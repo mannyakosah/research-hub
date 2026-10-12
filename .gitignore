@@ -1,0 +1,7 @@
+# Local working notes. Do not publish these.
+internal/
+
+# Interview preparation. Stays on this machine.
+docs/interview/
+docs/05-assumptions.md
+docs/07-decisions.md
