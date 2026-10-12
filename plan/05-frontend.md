@@ -22,7 +22,9 @@ Top bar: "Research Hub", the algorithm name as a link home, `PinBar`.
 
 ### `AlgorithmPage`
 
-- Title Wheel Balance. Repository `wheel-balance`. Current release from `useAlgorithm`, so it changes from V1 to V2 after release.
+- The sidebar lists every algorithm and the investigations under it. Pins follow the algorithm on screen.
+- Title is the algorithm name. Current release from `useAlgorithm`, so Wheel Balance changes from V1 to V2 after release.
+- An investigations table links to each question. The promotion rail follows the one in Testing, or the open one when nothing is in testing.
 - `ContractTable`: four inputs, four outputs, the ranges.
 - `VersionTable`: number, commit, artifact, evidence run. One row until release, then V2.
 - `PredictPanel` at the bottom.
@@ -30,7 +32,8 @@ Top bar: "Research Hub", the algorithm name as a link home, `PinBar`.
 ### `InvestigationPage`
 
 - Title Reduce correction error. Owner Researcher A. `StatusBadge`.
-- `CandidateCard`: commit `a81f3e2`, artifact `wheel-balance:a81f3e2`, one line that the folder holds notes and the repo holds code.
+- `CandidateCard`: commit `a81f3e2`, artifact `wheel-balance:a81f3e2`.
+- `FolderPanel`: the investigation directory. The candidate commit is a pointer into `wheel-balance` and is not copied. `notes.md` and `lateral-split.m` are files that used to live elsewhere. Each run is a subfolder, and its files link to the bytes.
 - `RunComparison`: three rows, #18 #17 #16, shop, tested, error. #18 links to the run page. After release, nothing in this list changes. The runs stay historical.
 - `ReleasePanel`.
 
@@ -55,6 +58,7 @@ Runs 16 and 17 render the same page with fewer files. The script only opens 18. 
 | `VersionTable` | `versions` | one row per version, evidence run as a link |
 | `StatusBadge` | `status` | Open, Testing, Released, Closed |
 | `CandidateCard` | `commit`, `artifact`, `status` | the candidate. Hidden once status is Released, replaced by "Released as V2" |
+| `FolderPanel` | `folder`, `repository`, `commit` | investigation directory: git pointer, copied files, run subfolders |
 | `RunComparison` | `runs` | the three-row list |
 | `SetupBlock` | `setup` | definition list |
 | `MeasurementTable` | `rows` | the four contract inputs |

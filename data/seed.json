@@ -1,0 +1,388 @@
+{
+  "algorithms": [
+    {
+      "id": "wheel-balance",
+      "name": "Wheel Balance",
+      "repository": "wheel-balance",
+      "contract": {
+        "inputs": "SensorFrame",
+        "outputs": "BalanceCorrection",
+        "ranges": {
+          "correction_angle": {
+            "min": 0,
+            "max": 360
+          },
+          "correction_weight": {
+            "min": 0,
+            "max": 10
+          },
+          "lateral_adjustment": {
+            "min": -5,
+            "max": 5
+          },
+          "confidence": {
+            "min": 0,
+            "max": 1
+          }
+        }
+      },
+      "current_release": "V1",
+      "procedure_revision": 3
+    },
+    {
+      "id": "tread-depth",
+      "name": "Tread Depth",
+      "repository": "tread-depth",
+      "contract": {
+        "inputs": "TreadReading",
+        "outputs": "TreadEstimate",
+        "input_fields": [
+          "groove_depth",
+          "shoulder_depth",
+          "mileage"
+        ],
+        "ranges": {
+          "remaining_miles": {
+            "min": 0,
+            "max": 80000
+          },
+          "confidence": {
+            "min": 0,
+            "max": 1
+          }
+        }
+      },
+      "current_release": "V1",
+      "procedure_revision": 1
+    },
+    {
+      "id": "road-force",
+      "name": "Road Force",
+      "repository": "road-force",
+      "contract": {
+        "inputs": "ForceTrace",
+        "outputs": "ForceVariation",
+        "input_fields": [
+          "radial_force",
+          "wheel_speed",
+          "load"
+        ],
+        "ranges": {
+          "peak_to_peak": {
+            "min": 0,
+            "max": 50
+          },
+          "confidence": {
+            "min": 0,
+            "max": 1
+          }
+        }
+      },
+      "current_release": "V1",
+      "procedure_revision": 1
+    }
+  ],
+  "procedures": [
+    {
+      "algorithm_id": "wheel-balance",
+      "revision": 3,
+      "blocks": {
+        "setup": [
+          "shop",
+          "vehicle",
+          "tire",
+          "sensors"
+        ],
+        "measurements": [
+          "wheel_angle",
+          "radial_force",
+          "lateral_force",
+          "wheel_speed"
+        ],
+        "files": [
+          "csv",
+          "photos",
+          "video",
+          "note"
+        ],
+        "result": [
+          "correction_error",
+          "correction_angle",
+          "correction_weight",
+          "lateral_adjustment",
+          "confidence"
+        ]
+      }
+    },
+    {
+      "algorithm_id": "tread-depth",
+      "revision": 1,
+      "blocks": {
+        "setup": [
+          "shop",
+          "vehicle",
+          "tire"
+        ],
+        "measurements": [
+          "reading"
+        ],
+        "files": [
+          "note"
+        ],
+        "result": [
+          "confidence"
+        ]
+      }
+    },
+    {
+      "algorithm_id": "road-force",
+      "revision": 1,
+      "blocks": {
+        "setup": [
+          "shop",
+          "vehicle",
+          "tire"
+        ],
+        "measurements": [
+          "reading"
+        ],
+        "files": [
+          "note"
+        ],
+        "result": [
+          "confidence"
+        ]
+      }
+    }
+  ],
+  "versions": [
+    {
+      "number": "V1",
+      "algorithm_id": "wheel-balance",
+      "commit": "b10c44d",
+      "artifact_id": "wheel-balance:1",
+      "from_investigation": null,
+      "evidence_run": null,
+      "released_by": "Researcher A",
+      "released_at": "2026-09-01"
+    },
+    {
+      "number": "V1",
+      "algorithm_id": "tread-depth",
+      "commit": "c44aa10",
+      "artifact_id": "tread-depth:1",
+      "from_investigation": null,
+      "evidence_run": null,
+      "released_by": "Researcher B",
+      "released_at": "2026-08-12"
+    },
+    {
+      "number": "V1",
+      "algorithm_id": "road-force",
+      "commit": "aa01ff2",
+      "artifact_id": "road-force:1",
+      "from_investigation": null,
+      "evidence_run": null,
+      "released_by": "Researcher A",
+      "released_at": "2026-07-01"
+    }
+  ],
+  "investigations": [
+    {
+      "id": "reduce-correction-error",
+      "name": "Reduce correction error",
+      "algorithm_id": "wheel-balance",
+      "owner": "Researcher A",
+      "candidate_commit": "a81f3e2",
+      "candidate_artifact": "wheel-balance:a81f3e2",
+      "status": "Testing",
+      "outcome": "",
+      "folder": "investigations/reduce-correction-error/"
+    },
+    {
+      "id": "sensor-mount-swap",
+      "name": "Sensor mount swap",
+      "algorithm_id": "wheel-balance",
+      "owner": "Researcher A",
+      "candidate_commit": "d17aa09",
+      "candidate_artifact": "wheel-balance:d17aa09",
+      "status": "Closed",
+      "outcome": "Ended without a release. The mount change did not lower the error.",
+      "folder": "investigations/sensor-mount-swap/"
+    },
+    {
+      "id": "estimate-remaining-miles",
+      "name": "Estimate remaining miles",
+      "algorithm_id": "tread-depth",
+      "owner": "Researcher B",
+      "candidate_commit": "",
+      "candidate_artifact": "",
+      "status": "Open",
+      "outcome": "",
+      "folder": "investigations/estimate-remaining-miles/"
+    },
+    {
+      "id": "gauge-check",
+      "name": "Gauge check",
+      "algorithm_id": "tread-depth",
+      "owner": "Researcher B",
+      "candidate_commit": "",
+      "candidate_artifact": "",
+      "status": "Closed",
+      "outcome": "Ended without a release. The gauge readings were not repeatable.",
+      "folder": "investigations/gauge-check/"
+    },
+    {
+      "id": "shoulder-variation",
+      "name": "Reduce variation at the shoulder",
+      "algorithm_id": "road-force",
+      "owner": "Researcher B",
+      "candidate_commit": "e91ab70",
+      "candidate_artifact": "road-force:e91ab70",
+      "status": "Testing",
+      "outcome": "",
+      "folder": "investigations/shoulder-variation/"
+    },
+    {
+      "id": "oem-spec-match",
+      "name": "Match the OEM spec",
+      "algorithm_id": "road-force",
+      "owner": "Researcher A",
+      "candidate_commit": "",
+      "candidate_artifact": "",
+      "status": "Closed",
+      "outcome": "Ended without a release. The spec change was dropped.",
+      "folder": "investigations/oem-spec-match/"
+    }
+  ],
+  "runs": [
+    {
+      "number": 16,
+      "investigation_id": "reduce-correction-error",
+      "procedure_revision": 3,
+      "tested": {
+        "kind": "version",
+        "number": "V1"
+      },
+      "technician": "recorded on the run",
+      "date": "2026-10-05",
+      "status": "Complete",
+      "setup": {
+        "shop": "Boston Service Center",
+        "vehicle": "2019 Camry",
+        "tire": "225/45R17",
+        "sensors": [
+          "A",
+          "B",
+          "C"
+        ]
+      },
+      "measurements": [
+        {
+          "radial_force": 12.4,
+          "lateral_force": 3.4,
+          "wheel_angle": 27.2,
+          "wheel_speed": 8.3
+        }
+      ],
+      "correction_error": 3.4,
+      "output": {
+        "correction_angle": 30.6,
+        "correction_weight": 1.2,
+        "lateral_adjustment": -0.34,
+        "confidence": 0.86
+      },
+      "folder": "investigations/reduce-correction-error/runs/016/"
+    },
+    {
+      "number": 17,
+      "investigation_id": "reduce-correction-error",
+      "procedure_revision": 3,
+      "tested": {
+        "kind": "version",
+        "number": "V1"
+      },
+      "technician": "recorded on the run",
+      "date": "2026-10-08",
+      "status": "Complete",
+      "setup": {
+        "shop": "Woburn Service Center",
+        "vehicle": "2021 F-150",
+        "tire": "275/65R18",
+        "sensors": [
+          "A",
+          "B",
+          "C"
+        ]
+      },
+      "measurements": [
+        {
+          "radial_force": 12.4,
+          "lateral_force": 3.1,
+          "wheel_angle": 27.2,
+          "wheel_speed": 8.3
+        }
+      ],
+      "correction_error": 3.1,
+      "output": {
+        "correction_angle": 30.3,
+        "correction_weight": 1.2,
+        "lateral_adjustment": -0.31,
+        "confidence": 0.86
+      },
+      "folder": "investigations/reduce-correction-error/runs/017/"
+    },
+    {
+      "number": 18,
+      "investigation_id": "reduce-correction-error",
+      "procedure_revision": 3,
+      "tested": {
+        "kind": "candidate",
+        "commit": "a81f3e2"
+      },
+      "technician": "recorded on the run",
+      "date": "2026-10-12",
+      "status": "Complete",
+      "setup": {
+        "shop": "Woburn Service Center",
+        "vehicle": "2021 F-150",
+        "tire": "275/65R18",
+        "sensors": [
+          "A",
+          "B",
+          "C"
+        ]
+      },
+      "measurements": [
+        {
+          "radial_force": 12.4,
+          "lateral_force": 3.6,
+          "wheel_angle": 27.2,
+          "wheel_speed": 8.3
+        }
+      ],
+      "correction_error": 1.8,
+      "output": {
+        "correction_angle": 29.0,
+        "correction_weight": 1.2,
+        "lateral_adjustment": -0.36,
+        "confidence": 0.94
+      },
+      "folder": "investigations/reduce-correction-error/runs/018/"
+    }
+  ],
+  "pins": {
+    "wheel-balance": {
+      "dev": "wheel-balance:a81f3e2",
+      "prod": "wheel-balance:1"
+    },
+    "tread-depth": {
+      "dev": "tread-depth:1",
+      "prod": "tread-depth:1"
+    },
+    "road-force": {
+      "dev": "road-force:e91ab70",
+      "prod": "road-force:1"
+    }
+  }
+}

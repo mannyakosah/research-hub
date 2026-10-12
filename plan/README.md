@@ -34,11 +34,24 @@ Add `frontend/` with three pages.
 2. Reduce correction error: candidate, status, the run list, and release.
 3. Run #18, with setup, measurements, files, and the result.
 
-Skip accounts, a second algorithm, creating investigations, and live capture. The run is seeded. The release button is the only write that has to work live.
+The click path is seeded. Release is the only write, and `/` opens Wheel Balance directly.
+
+## Phase 4 — The flow on screen
+
+Make the path something a visitor can do. Details are in [08-demo-flow.md](08-demo-flow.md).
+
+- A hub page, then the algorithm, with previous runs and every investigation.
+- Create an investigation. It starts Open. Pinning `a81f3e2` moves it to Testing and points dev at that artifact.
+- Prepare a run from the procedure, record one row, and complete it. The hub scores the artifact under test.
+- A promotion rail shows question → candidate → shop runs → checks → version → prod pin.
+- The pages are restyled so each record is recognizable and the rail is the spine of the screen.
+- Every page and section names its kind and prints a one-sentence definition. Tooltips repeat that sentence on the words that show up again.
+
+Stretch waits until this flow is obvious.
 
 ## Stretch
 
-After the click path works once, in this order: lineage, shadow mode, a real wheel file, a rig manifest, a library call, and a regression summary with n and spread. Details are in [07-stretch.md](07-stretch.md).
+After the flow is on screen, in this order: lineage, shadow mode, a real wheel file, a rig manifest, a library call, and a regression summary with n and spread. Details are in [07-stretch.md](07-stretch.md).
 
 ## Specification
 
@@ -51,3 +64,4 @@ After the click path works once, in this order: lineage, shadow mode, a real whe
 | [05-frontend.md](05-frontend.md) | Routes, components, hooks |
 | [06-tests.md](06-tests.md) | Tests that prove the story before any screen |
 | [07-stretch.md](07-stretch.md) | Lineage, shadow, a real wheel, manifest, library, variance |
+| [08-demo-flow.md](08-demo-flow.md) | Hub, create an investigation, prepare a run, promotion rail, restyle |

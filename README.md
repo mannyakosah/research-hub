@@ -14,7 +14,21 @@ Wheel balance, a fictional algorithm with seeded shop runs. The sensor math is a
 2. Its investigation, **Reduce correction error**. Candidate commit `a81f3e2`, built as `wheel-balance:a81f3e2`, pinned in dev.
 3. **Run #18.** A technician filled the form at Woburn: setup, measurement rows, CSV, photos, video, note. Result 1.8°, against 3.1° for V1 on run #17.
 4. Release. Checks pass. The candidate artifact becomes **V2**. Production is pinned to it. The bytes do not change between the shop and production.
-5. `POST /algorithms/wheel-balance/v2/predict` returns the four outputs.
+5. `POST /algorithms/wheel-balance/predict` returns the four outputs.
+
+## On screen
+
+An algorithm is one part of the rig. The sidebar lists each algorithm and the investigations under it. **New algorithm** is at the top. The **+** beside an algorithm, and **New investigation** on its page, start a question.
+
+![Wheel Balance, with its investigations and the promotion of Reduce correction error](docs/screenshots/algorithms.png)
+
+An investigation has a folder. The git commit stays in the repository; the folder records which commit. Notes and one-off files are copied in, and each shop visit is a subfolder that stays collapsed until you open it.
+
+![The investigation folder, with the MATLAB file, the notes, and three collapsed runs](docs/screenshots/folder.png)
+
+![New investigation, named on Wheel Balance and owned by a researcher](docs/screenshots/new-investigation.png)
+
+![New algorithm, with the repository name filled from the algorithm name](docs/screenshots/new-algorithm.png)
 
 ## Docs
 
@@ -33,4 +47,4 @@ Diagrams: [Research Hub board](https://www.figma.com/board/X5sMGPvWUpY001vv4XIV5
 
 ## Status
 
-Design and implementation plan. The build is one process: `contract/`, `algorithms/wheel_balance/`, `registry/`, `hub/`, `api/`, and `frontend/`.
+`pytest` replays the seeded runs and the release. The API is `uvicorn api.main:app --port 8000`. The screens are `cd frontend && npm run dev`. They walk the seeded algorithms, the investigation folder, and release. A created algorithm or investigation lasts for the server session. The next plan is preparing a run and completing it.

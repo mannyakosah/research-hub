@@ -52,7 +52,7 @@ def list_run_files(folder: Path) -> list[RunFile]:
     """Name, kind (csv, photo, video, note), relative path, byte size."""
 ```
 
-The UI links to `GET .../runs/{n}/files/{path}`. FastAPI `FileResponse`. Seeded files only. No upload route.
+`list_investigation_files` lists the top-level notes and analysis, with the origin sentence from `origins.json`. It does not recurse into `runs/`. The UI links to `GET .../files/{name}` for those files and `GET .../runs/{n}/files/{path}` for a visit. FastAPI `FileResponse`. Seeded files only. No upload route.
 
 ## `hub/checks.py`
 
@@ -124,8 +124,11 @@ Prefix `/api`.
 
 | Method | Path | Calls | Returns |
 | --- | --- | --- | --- |
-| GET | `/algorithms/wheel-balance` | `algorithm`, `versions`, `procedure`, `pins` | one payload for the algorithm page |
+| GET | `/algorithms` | every algorithm and its investigations | sidebar |
+| GET | `/algorithms/{algorithm_id}` | `algorithm`, `versions`, `procedure`, `pins`, investigations | one algorithm page |
 | GET | `/algorithms/wheel-balance/investigations/reduce-correction-error` | `investigation`, `runs` | investigation page |
+| GET | `/algorithms/wheel-balance/investigations/reduce-correction-error/files` | `list_investigation_files`, `list_run_files` | folder, top-level files, run subfolders |
+| GET | `/algorithms/wheel-balance/investigations/reduce-correction-error/files/{name}` | `FileResponse` | a top-level file |
 | GET | `/algorithms/wheel-balance/investigations/reduce-correction-error/runs/{number}` | `run` | one run |
 | GET | `/algorithms/wheel-balance/investigations/reduce-correction-error/runs/{number}/files` | `list_run_files` | file list |
 | GET | `/algorithms/wheel-balance/investigations/reduce-correction-error/runs/{number}/files/{path}` | `FileResponse` | the byte |

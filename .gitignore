@@ -1,5 +1,13 @@
 # Local working notes. Do not publish these.
 internal/
 
+__pycache__/
+.pytest_cache/
+.venv/
+*.pyc
+
+node_modules/
+frontend/dist/
+
 docs/05-assumptions.md
 docs/07-decisions.md

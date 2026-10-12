@@ -2,6 +2,8 @@
 
 `data/seed.json` is the metadata. `data/files/` is the run folders. The store computes nothing at load except file sizes. Errors in the JSON match what replay produces, so a mismatch fails `test_story`.
 
+The catalog has three algorithms so the hub is not a single path. Wheel Balance is the one with shop runs and a release. Tread Depth and Road Force are records you can open: each has two investigations, a contract, a V1, and its own dev and prod pins. Their investigations do not go through the Wheel Balance checks.
+
 ## How the story numbers fall out
 
 `correction_error` = round(abs(`correction_angle` − `wheel_angle`), 1).
@@ -55,7 +57,9 @@ Pins: dev `wheel-balance:a81f3e2`, prod `wheel-balance:1`.
 
 ```text
 data/files/investigations/reduce-correction-error/
-  notes.md                                          a few lines of researcher notes
+  notes.md                                          a few lines of researcher notes, copied in from a document
+  lateral-split.m                                   the one-off MATLAB check, copied into the folder
+  origins.json                                      where each top-level file came from; not listed in the UI
   runs/016/metadata.json
   runs/016/measurements/sensor-data.csv
   runs/017/metadata.json
