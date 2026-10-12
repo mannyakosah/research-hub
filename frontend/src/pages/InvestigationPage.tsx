@@ -1,12 +1,9 @@
-import { useOutletContext, useParams } from "react-router-dom";
+import { useOutletContext, useParams, useSearchParams } from "react-router-dom";
 import type { HubContextValue } from "../App";
-import { CandidateCard } from "../components/CandidateCard";
 import { FolderPanel } from "../components/FolderPanel";
-import { PromotionRail } from "../components/PromotionRail";
+import { PromotionDetail } from "../components/PromotionDetail";
+import { isStepId, PromotionRail, promotionState } from "../components/PromotionRail";
 import { RecordHeader } from "../components/RecordHeader";
-import { ReleasePanel } from "../components/ReleasePanel";
-import { RunComparison } from "../components/RunComparison";
-import { SectionBlock } from "../components/SectionBlock";
 import { Stat } from "../components/Stat";
 import { StatusBadge } from "../components/StatusBadge";
 import { useInvestigation } from "../hooks/useInvestigation";
@@ -18,6 +15,7 @@ export function InvestigationPage() {
   const algorithmId = params.algorithmId ?? "";
   const investigationId = params.investigationId ?? "";
   const investigation = useInvestigation(algorithmId, investigationId);
+  const [searchParams, setSearchParams] = useSearchParams();
   if (investigation.loading) return <p className="loading">Loading…</p>;
   if (investigation.error) return <p className="error">Request failed ({investigation.error})</p>;
   if (!investigation.data) return null;
@@ -25,8 +23,17 @@ export function InvestigationPage() {
   const runs = investigation.data.runs;
   const versions = algorithm.data?.versions ?? [];
   const prodPin = algorithm.data?.pins.prod ?? "";
-  const published = versions.find((version) => version.from_investigation === record.id);
   const liveRelease = algorithmId === "wheel-balance" && record.id === "reduce-correction-error";
+  const progress = promotionState({
+    status: record.status,
+    hasCompleteRun: runs.some((run) => run.status === "Complete"),
+    versions,
+    investigationId: record.id,
+    prodPin,
+    hasCandidate: Boolean(record.candidate_commit),
+  });
+  const requested = searchParams.get("step");
+  const selected = isStepId(requested) ? requested : (progress.current ?? "question");
 
   return (
     <article className="page investigation-page">
@@ -51,37 +58,33 @@ export function InvestigationPage() {
           investigationId={record.id}
           prodPin={prodPin}
           hasCandidate={Boolean(record.candidate_commit)}
+          selected={selected}
+          onSelect={(step) => setSearchParams({ step }, { replace: true })}
         />
       )}
-      <div className="split">
-        <CandidateCard
-          commit={published?.commit || record.candidate_commit}
-          artifact={published?.artifact_id || record.candidate_artifact}
+      {prodPin && (
+        <PromotionDetail
+          step={selected}
+          algorithmId={algorithmId}
+          investigationId={record.id}
+          investigationName={record.name}
           status={record.status}
-          published={record.outcome || (published ? `Released as ${published.number}` : undefined)}
+          owner={record.owner}
+          commit={record.candidate_commit}
+          artifact={record.candidate_artifact}
+          outcome={record.outcome}
+          runs={runs}
+          versions={versions}
+          procedure={algorithm.data?.procedure}
+          prodPin={prodPin}
+          devPin={algorithm.data?.pins.dev ?? ""}
+          currentRelease={algorithm.data?.algorithm.current_release ?? ""}
+          investigations={algorithm.data?.investigations ?? []}
+          liveRelease={liveRelease}
+          reloadAlgorithm={algorithm.reload}
+          reloadInvestigation={investigation.reload}
         />
-        {liveRelease ? (
-          <ReleasePanel
-            status={record.status}
-            candidateCommit={record.candidate_commit}
-            candidateArtifact={record.candidate_artifact}
-            reloadAlgorithm={algorithm.reload}
-            reloadInvestigation={investigation.reload}
-            reloadEnvironments={algorithm.reload}
-          />
-        ) : (
-          <SectionBlock tone="version" kind="Release" sentence={glossary.release}>
-            {record.status === "Closed" && <p>{record.outcome}</p>}
-            {record.status === "Released" && <p>{record.outcome || "This candidate was published."}</p>}
-            {record.status === "Open" && (
-              <p>No candidate is pinned yet. A release publishes a candidate after the checks pass.</p>
-            )}
-            {record.status === "Testing" && (
-              <p>Dev can run this candidate. This demo runs the release checks on Wheel Balance.</p>
-            )}
-          </SectionBlock>
-        )}
-      </div>
+      )}
       <FolderPanel
         algorithmId={algorithmId}
         investigationId={record.id}
@@ -89,7 +92,6 @@ export function InvestigationPage() {
         repository={algorithm.data?.algorithm.repository ?? ""}
         commit={record.candidate_commit}
       />
-      <RunComparison algorithmId={algorithmId} investigationId={record.id} runs={runs} />
     </article>
   );
 }

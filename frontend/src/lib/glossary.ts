@@ -1,7 +1,7 @@
 export const glossary = {
   hub: "Records an algorithm from shop tests through to a released version.",
   algorithm:
-    "A component of the rig, stored in one git repository. It has a contract, a procedure, released versions, and investigations.",
+    "Code the SmartBay app calls to move one part of the rig. It lives in one git repository, with a contract, a procedure, released versions, and investigations.",
   currentRelease: "The version prod is pinned to.",
   repository: "The git repository that holds this algorithm's source. The hub stores the name; the code stays in git.",
   contract: "The inputs the algorithm accepts and the outputs it must return, with an allowed range on each output.",

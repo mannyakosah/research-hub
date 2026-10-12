@@ -13,6 +13,13 @@
   box-sizing: border-box;
 }
 
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   margin: 0;
 }
@@ -29,8 +36,10 @@ a {
 
 .app {
   display: grid;
-  grid-template-columns: 252px 1fr;
-  min-height: 100vh;
+  grid-template-columns: 248px minmax(0, 1fr);
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .sidebar {
@@ -38,10 +47,11 @@ a {
   color: #e7ebf0;
   display: flex;
   flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  height: 100%;
   padding: 20px 14px;
-  position: sticky;
-  top: 0;
-  height: 100vh;
+  overflow: hidden;
 }
 
 .brand {
@@ -258,8 +268,11 @@ a {
 }
 
 main {
-  padding: 24px 28px 56px;
   min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: auto;
+  padding: 28px 32px 64px;
 }
 
 .record-header {
@@ -325,7 +338,7 @@ main {
   color: #5c6775;
   font-size: 0.88rem;
   flex: 1;
-  min-width: 14rem;
+  min-width: 0;
 }
 
 .record-header h1,
@@ -349,6 +362,13 @@ main {
 
 .stat-row:has(.stat:nth-child(3):last-child) {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.stat,
+.section,
+.promotion,
+.split {
+  min-width: 0;
 }
 
 .stat,
@@ -438,7 +458,9 @@ main {
 }
 
 .section-body {
+  min-width: 0;
   padding: 8px 16px 14px;
+  overflow-x: auto;
 }
 
 .dash-link {
@@ -469,11 +491,32 @@ main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
   align-items: flex-start;
   font-size: 0.78rem;
   color: #8b96a3;
   position: relative;
+}
+
+.promotion-step button {
+  appearance: none;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  padding: 0 8px 0 0;
+  margin: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.promotion-step button:focus-visible {
+  outline: 2px solid #2f80c9;
+  outline-offset: 3px;
 }
 
 .promotion-step:not(:last-child)::before {
@@ -513,6 +556,30 @@ main {
 .promotion-step.is-current .promotion-dot {
   background: var(--accent-investigation);
   border-color: var(--accent-investigation);
+}
+
+.promotion-step.is-selected button {
+  color: #1c2430;
+  font-weight: 650;
+}
+
+.promotion-step.is-selected .promotion-dot {
+  box-shadow: 0 0 0 3px rgba(166, 124, 0, 0.28);
+}
+
+#promotion-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.step-note {
+  margin: 0 0 8px;
+  color: #5c6775;
+}
+
+.check-list .waiting span:first-child {
+  color: #8b96a3;
 }
 
 .back-link {
@@ -567,7 +634,7 @@ dd {
 
 .folder-row {
   display: grid;
-  grid-template-columns: 6.5rem minmax(10rem, 0.8fr) minmax(14rem, 1.2fr);
+  grid-template-columns: 6.5rem minmax(0, 0.9fr) minmax(0, 1.1fr);
   gap: 8px 16px;
   align-items: baseline;
   padding: 8px 0;
@@ -624,29 +691,26 @@ dd {
   cursor: help;
 }
 
+.term-button:focus-visible {
+  outline: 2px solid #2f80c9;
+  outline-offset: 2px;
+}
+
 .term-note {
-  display: none;
-  position: absolute;
-  z-index: 8;
-  top: calc(100% + 6px);
-  left: 0;
-  width: min(280px, 70vw);
+  position: fixed;
+  z-index: 40;
+  width: 260px;
   padding: 8px 10px;
-  background: #fff;
-  color: #1c2430;
-  border: 1px solid #1b2128;
+  background: #1b2128;
+  color: #f4f6f8;
   border-radius: 8px;
   font-size: 0.82rem;
   font-weight: 400;
   text-transform: none;
   letter-spacing: 0;
   line-height: 1.4;
-  box-shadow: 0 8px 20px rgba(22, 32, 44, 0.12);
-}
-
-.term:hover .term-note,
-.term:focus-within .term-note {
-  display: block;
+  box-shadow: 0 8px 20px rgba(22, 32, 44, 0.18);
+  pointer-events: none;
 }
 
 .badge {
@@ -803,13 +867,27 @@ select,
 }
 
 @media (max-width: 900px) {
+  html,
+  body,
+  #root {
+    height: auto;
+    overflow: auto;
+  }
+
   .app {
     display: block;
+    height: auto;
+    overflow: visible;
   }
 
   .sidebar {
-    position: static;
     height: auto;
+    overflow: visible;
+  }
+
+  main {
+    height: auto;
+    overflow: visible;
   }
 
   .rail {

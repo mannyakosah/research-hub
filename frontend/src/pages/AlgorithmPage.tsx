@@ -1,8 +1,8 @@
-import { Link, useOutletContext } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import type { HubContextValue } from "../App";
 import { ContractTable } from "../components/ContractTable";
 import { PredictPanel } from "../components/PredictPanel";
-import { PromotionRail } from "../components/PromotionRail";
+import { PromotionRail, promotionState, type StepId } from "../components/PromotionRail";
 import { RecordHeader } from "../components/RecordHeader";
 import { Stat } from "../components/Stat";
 import { StatusBadge } from "../components/StatusBadge";
@@ -11,6 +11,7 @@ import { glossary } from "../lib/glossary";
 
 export function AlgorithmPage() {
   const { algorithm, openNewInvestigation } = useOutletContext<HubContextValue>();
+  const navigate = useNavigate();
   if (algorithm.loading) return <p className="loading">Loading…</p>;
   if (algorithm.error) return <p className="error">Request failed ({algorithm.error})</p>;
   if (!algorithm.data) return null;
@@ -42,6 +43,19 @@ export function AlgorithmPage() {
           investigationId={featured.id}
           prodPin={pins.prod}
           hasCandidate={Boolean(featured.candidate_commit)}
+          selected={
+            promotionState({
+              status: featured.status,
+              hasCompleteRun: featured.has_complete_run,
+              versions,
+              investigationId: featured.id,
+              prodPin: pins.prod,
+              hasCandidate: Boolean(featured.candidate_commit),
+            }).current ?? "question"
+          }
+          onSelect={(step: StepId) =>
+            navigate(`/algorithms/${record.id}/investigations/${featured.id}?step=${step}`)
+          }
         />
       )}
       <section className="section section-investigation">

@@ -52,7 +52,7 @@ The glossary is the only copy. A tooltip and a header that talk about the same w
 | Term | Sentence |
 | --- | --- |
 | Research Hub | Records an algorithm from shop tests through to a released version. |
-| Algorithm | A component of the rig, stored in one git repository. It has a contract, a procedure, released versions, and investigations. |
+| Algorithm | Code the SmartBay app calls to move one part of the rig. It lives in one git repository, with a contract, a procedure, released versions, and investigations. |
 | Current release | The version prod is pinned to. |
 | Repository | The git repository that holds this algorithm's source. The hub stores the name; the code stays in git. |
 | Contract | The inputs the algorithm accepts and the outputs it must return, with an allowed range on each output. |
@@ -87,7 +87,7 @@ Status badges use `Term` with the Open, Testing, Released, and Closed sentences.
 5. Version — a version whose `from_investigation` is this investigation
 6. Prod — the prod pin equals that version's artifact
 
-Each step is done, current, or waiting. The current step is the one the page's primary button performs. On the seeded investigation that button is Release. On a new Open investigation it is "Pin candidate". The rail is a view of records that already exist. It is not a new record.
+Each step is done, current, or waiting, and each step is a button. Choosing one shows that step under the rail. The shop-run step shows the procedure. A visit that was not recorded is labeled as an example. Release still writes only on Wheel Balance, Reduce correction error. The rail is a view of records that already exist. It is not a new record.
 
 Under the rail, one line names the step that is current, in a full sentence:
 

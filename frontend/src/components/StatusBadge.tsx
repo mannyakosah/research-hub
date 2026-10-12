@@ -1,4 +1,5 @@
 import { glossary } from "../lib/glossary";
+import { Tip } from "./Term";
 
 const LABELS = ["Open", "Testing", "Released", "Closed"] as const;
 
@@ -14,15 +15,8 @@ export function StatusBadge({ status }: { status: string }) {
   const tone = known.toLowerCase();
   const sentence = SENTENCES[tone];
   return (
-    <span className={`badge badge-${tone} term`}>
-      <button type="button" className="term-button">
-        {known}
-      </button>
-      {sentence && (
-        <span className="term-note" role="tooltip">
-          {sentence}
-        </span>
-      )}
+    <span className={`badge badge-${tone}`}>
+      {sentence ? <Tip text={sentence}>{known}</Tip> : known}
     </span>
   );
 }
